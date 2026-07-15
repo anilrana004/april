@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 
 export function Hero() {
@@ -7,20 +8,16 @@ export function Hero() {
         {/* Left: editorial image */}
         <div className="relative flex-1 min-h-[55vw] md:min-h-0">
           <img
-            src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwamV3ZWxyeSUyMGdvbGQlMjBuZWNrbGFjZSUyMG1pbmltYWx8ZW58MXx8fHwxNzgzMjc4MzkzfDA&ixlib=rb-4.1.0&q=80&w=1080"
+            src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
             alt="Woman wearing gold necklace"
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
-          {/* subtle overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent" />
         </div>
 
         {/* Right: copy */}
         <div className="flex flex-col justify-center items-start px-8 md:px-16 py-16 md:py-0 bg-[#F5F0EB] md:w-[44%] md:min-w-[380px]">
-          <p
-            className="uppercase tracking-[0.22em] text-[#C9A96E] mb-4"
-            style={{ fontSize: "0.7rem" }}
-          >
+          <p className="uppercase tracking-[0.22em] text-[#C9A96E] mb-4" style={{ fontSize: "0.7rem" }}>
             Summer Collection 2026
           </p>
           <h1
@@ -41,25 +38,22 @@ export function Hero() {
             every day, built to last a lifetime.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
+            <Link
+              to="/collections/all"
               className="inline-flex items-center gap-2 bg-[#1A1A1A] text-white px-8 py-3.5 uppercase tracking-widest transition-colors hover:bg-[#333]"
               style={{ fontSize: "0.72rem" }}
             >
               Shop Now <ArrowRight size={14} />
-            </a>
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
+            </Link>
+            <Link
+              to="/collections/all"
               className="inline-flex items-center gap-2 border border-[#1A1A1A] text-[#1A1A1A] px-8 py-3.5 uppercase tracking-widest transition-colors hover:bg-[#1A1A1A] hover:text-white"
               style={{ fontSize: "0.72rem" }}
             >
               Explore Gifts
-            </a>
+            </Link>
           </div>
 
-          {/* Trust badges */}
           <div className="flex items-center gap-8 mt-14 border-t border-[#E0DAD4] pt-8 w-full">
             {[
               { label: "14k Gold", sub: "All our pieces" },

@@ -1,5 +1,5 @@
 import { X, Minus, Plus, ShoppingBag, ArrowRight } from "lucide-react";
-import { type Product } from "./ProductGrid";
+import { type Product } from "../data/products";
 
 export type CartItem = Product & { quantity: number };
 
@@ -12,21 +12,15 @@ type CartDrawerProps = {
 };
 
 export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: CartDrawerProps) {
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.variants[0].price * item.quantity, 0);
   const FREE_SHIPPING_THRESHOLD = 150;
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   return (
     <>
-      {/* Backdrop */}
       {open && (
-        <div
-          className="fixed inset-0 bg-black/40 z-[90]"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-black/40 z-[90]" onClick={onClose} />
       )}
-
-      {/* Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-full max-w-[420px] bg-white z-[100] flex flex-col shadow-2xl transition-transform duration-400 ${
           open ? "translate-x-0" : "translate-x-full"
@@ -42,7 +36,7 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
           </button>
         </div>
 
-        {/* Free shipping progress */}
+        {/* Shipping progress */}
         {remaining > 0 ? (
           <div className="px-6 py-4 bg-[#F5F0EB] border-b border-[#E8E4DF]">
             <p className="text-[#6B6560] mb-2.5" style={{ fontSize: "0.72rem" }}>
@@ -84,13 +78,13 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
               {items.map((item) => (
                 <div key={item.id} className="flex gap-4">
                   <div className="w-20 h-24 flex-shrink-0 overflow-hidden bg-[#F0EDE9]">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-1">
                       <div>
                         <p className="text-[#9A9590] uppercase tracking-wider" style={{ fontSize: "0.62rem" }}>
-                          {item.material}
+                          {item.variants[0].label}
                         </p>
                         <h3 className="text-[#1A1A1A] mt-0.5" style={{ fontSize: "0.84rem" }}>
                           {item.name}
@@ -104,7 +98,6 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
                       </button>
                     </div>
                     <div className="flex items-center justify-between mt-3">
-                      {/* Qty controls */}
                       <div className="flex items-center border border-[#E0DAD4]">
                         <button
                           onClick={() => onUpdateQty(item.id, item.quantity - 1)}
@@ -123,7 +116,7 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
                         </button>
                       </div>
                       <p className="text-[#1A1A1A]" style={{ fontSize: "0.88rem" }}>
-                        ${(item.price * item.quantity).toFixed(0)}
+                        ${(item.variants[0].price * item.quantity).toFixed(0)}
                       </p>
                     </div>
                   </div>
@@ -137,17 +130,11 @@ export function CartDrawer({ open, onClose, items, onUpdateQty, onRemove }: Cart
         {items.length > 0 && (
           <div className="border-t border-[#E8E4DF] px-6 py-6">
             <div className="flex justify-between items-center mb-1.5">
-              <span className="uppercase tracking-wider text-[#6B6560]" style={{ fontSize: "0.72rem" }}>
-                Subtotal
-              </span>
-              <span className="text-[#1A1A1A]" style={{ fontSize: "0.88rem" }}>
-                ${subtotal.toFixed(0)}
-              </span>
+              <span className="uppercase tracking-wider text-[#6B6560]" style={{ fontSize: "0.72rem" }}>Subtotal</span>
+              <span className="text-[#1A1A1A]" style={{ fontSize: "0.88rem" }}>${subtotal.toFixed(0)}</span>
             </div>
             <div className="flex justify-between items-center mb-6">
-              <span className="uppercase tracking-wider text-[#6B6560]" style={{ fontSize: "0.72rem" }}>
-                Shipping
-              </span>
+              <span className="uppercase tracking-wider text-[#6B6560]" style={{ fontSize: "0.72rem" }}>Shipping</span>
               <span className="text-[#6B6560]" style={{ fontSize: "0.82rem" }}>
                 {subtotal >= FREE_SHIPPING_THRESHOLD ? "Free" : "Calculated at checkout"}
               </span>

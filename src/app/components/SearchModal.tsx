@@ -1,15 +1,11 @@
-import { useState } from "react";
-import { X, Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Search, ArrowRight } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { products } from "../data/products";
 
 const suggestions = [
   "Gold necklace", "Pearl earrings", "Diamond ring", "Tennis bracelet",
   "Hoop earrings", "Signet ring", "Chain necklace", "Cuff bracelet",
-];
-
-const trending = [
-  { name: "Crescent Moon Pendant", price: 148, image: "https://images.unsplash.com/photo-1569397288884-4d43d6738fbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200" },
-  { name: "Oval Hoop Earrings", price: 138, image: "https://images.unsplash.com/photo-1599459183200-59c7687a0275?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200" },
-  { name: "Dome Signet Ring", price: 195, image: "https://images.unsplash.com/photo-1625516152414-8f33eef3d660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200" },
 ];
 
 type SearchModalProps = {
@@ -19,6 +15,30 @@ type SearchModalProps = {
 
 export function SearchModal({ open, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  const filtered = query
+    ? products.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query.toLowerCase()) ||
+          p.category.toLowerCase().includes(query.toLowerCase()) ||
+          p.tags.some((t) => t.includes(query.toLowerCase()))
+      )
+    : [];
+
+  const trending = products.slice(0, 4);
 
   if (!open) return null;
 
@@ -37,7 +57,6 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
             placeholder="Search for jewelry..."
             className="flex-1 text-[#1A1A1A] placeholder-[#B0AAA4] outline-none bg-transparent"
             style={{ fontSize: "1rem" }}
-            onKeyDown={(e) => e.key === "Escape" && onClose()}
           />
           {query && (
             <button onClick={() => setQuery("")} className="text-[#9A9590] hover:text-[#1A1A1A] transition-colors">
@@ -49,10 +68,9 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           </button>
         </div>
 
-        {/* Suggestions */}
-        {!query && (
-          <div className="border-t border-[#E8E4DF]">
-            <div className="max-w-[900px] mx-auto px-4 md:px-8 py-8">
+        <div className="border-t border-[#E8E4DF]">
+          <div className="max-w-[900px] mx-auto px-4 md:px-8 py-8">
+            {!query ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {/* Popular searches */}
                 <div>
@@ -71,6 +89,26 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                       </button>
                     ))}
                   </div>
+
+                  <div className="mt-8">
+                    <p className="uppercase tracking-[0.18em] text-[#9A9590] mb-4" style={{ fontSize: "0.65rem" }}>
+                      Collections
+                    </p>
+                    <div className="space-y-2">
+                      {["Necklaces", "Earrings", "Rings", "Bracelets"].map((cat) => (
+                        <Link
+                          key={cat}
+                          to={`/collections/${cat.toLowerCase()}`}
+                          onClick={onClose}
+                          className="flex items-center justify-between py-2 text-[#555] hover:text-[#C9A96E] transition-colors border-b border-[#F5F0EB] group"
+                          style={{ fontSize: "0.82rem" }}
+                        >
+                          {cat}
+                          <ArrowRight size={13} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Trending products */}
@@ -80,50 +118,84 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                   </p>
                   <div className="space-y-4">
                     {trending.map((item) => (
-                      <div key={item.name} className="flex items-center gap-4 cursor-pointer group">
+                      <Link
+                        key={item.id}
+                        to={`/product/${item.slug}`}
+                        onClick={onClose}
+                        className="flex items-center gap-4 cursor-pointer group"
+                      >
                         <div className="w-14 h-14 overflow-hidden bg-[#F0EDE9] flex-shrink-0">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <p className="text-[#1A1A1A] group-hover:text-[#C9A96E] transition-colors" style={{ fontSize: "0.84rem" }}>
                             {item.name}
                           </p>
                           <p className="text-[#9A9590]" style={{ fontSize: "0.75rem" }}>
-                            ${item.price}
+                            ${item.variants[0].price}
                           </p>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Query results */}
-        {query && (
-          <div className="border-t border-[#E8E4DF]">
-            <div className="max-w-[900px] mx-auto px-4 md:px-8 py-8">
-              <p className="text-[#9A9590]" style={{ fontSize: "0.82rem" }}>
-                Showing results for <span className="text-[#1A1A1A]">"{query}"</span>
-              </p>
-              <div className="flex flex-wrap gap-2 mt-5">
-                {suggestions
-                  .filter((s) => s.toLowerCase().includes(query.toLowerCase()))
-                  .map((s) => (
-                    <button
-                      key={s}
-                      className="border border-[#E0DAD4] text-[#6B6560] px-3.5 py-1.5 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors"
-                      style={{ fontSize: "0.75rem" }}
-                    >
-                      {s}
-                    </button>
-                  ))}
+            ) : (
+              /* Search results */
+              <div>
+                <p className="text-[#9A9590] mb-6" style={{ fontSize: "0.82rem" }}>
+                  {filtered.length > 0
+                    ? `${filtered.length} result${filtered.length !== 1 ? "s" : ""} for "${query}"`
+                    : `No results for "${query}"`}
+                </p>
+                {filtered.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {filtered.map((item) => (
+                      <Link
+                        key={item.id}
+                        to={`/product/${item.slug}`}
+                        onClick={onClose}
+                        className="group"
+                      >
+                        <div className="aspect-square overflow-hidden bg-[#F0EDE9] mb-3">
+                          <img
+                            src={item.images[0]}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <p className="text-[#1A1A1A] group-hover:text-[#C9A96E] transition-colors" style={{ fontSize: "0.82rem" }}>
+                          {item.name}
+                        </p>
+                        <p className="text-[#9A9590]" style={{ fontSize: "0.75rem" }}>
+                          ${item.variants[0].price}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-8">
+                    <p className="text-[#9A9590] mb-4" style={{ fontSize: "0.82rem" }}>
+                      Try searching for:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestions.slice(0, 5).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => setQuery(s)}
+                          className="border border-[#E0DAD4] text-[#6B6560] px-3.5 py-1.5 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors"
+                          style={{ fontSize: "0.75rem" }}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
