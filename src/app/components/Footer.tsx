@@ -46,7 +46,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8">
           <div className="md:col-span-2">
             <Link to="/" className="block mb-6 tracking-[0.3em] uppercase text-white hover:text-[#C9A96E] transition-colors" style={{ fontFamily: "Georgia, serif", fontSize: "1.4rem" }}>
-              Aurea
+              April Singh
             </Link>
             <p className="text-white/50 leading-relaxed mb-8 max-w-xs" style={{ fontSize: "0.82rem", lineHeight: 1.8 }}>
               Fine jewelry crafted for everyday wear. 14k gold and sterling silver
@@ -98,7 +98,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/30" style={{ fontSize: "0.72rem" }}>
-            © 2026 Aurea Jewelry. All rights reserved.
+            © 2026 April Singh Jewelry. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {["Privacy Policy", "Terms of Service", "Accessibility"].map((link) => (

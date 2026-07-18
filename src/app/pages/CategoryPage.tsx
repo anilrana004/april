@@ -28,7 +28,7 @@ const categoryHeaders: Record<string, { title: string; desc: string; image: stri
   },
   all: {
     title: "All Jewelry",
-    desc: "The full Aurea collection — fine jewelry for every day.",
+    desc: "The full April Singh collection — fine jewelry for every day.",
     image: "https://images.unsplash.com/photo-1561828995-aa79a2db86dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400",
   },
 };

@@ -142,7 +142,7 @@ export function Navbar({ cartCount, onCartOpen, onSearchOpen }: NavbarProps) {
                 className="text-[#1A1A1A] tracking-[0.3em] uppercase"
                 style={{ fontFamily: "Georgia, serif", fontSize: "1.35rem" }}
               >
-                Aurea
+                April Singh
               </span>
             </Link>
 
@@ -276,7 +276,7 @@ export function Navbar({ cartCount, onCartOpen, onSearchOpen }: NavbarProps) {
           <div className="relative w-80 max-w-full bg-white h-full flex flex-col overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between px-5 py-4 border-b border-[#E8E4DF]">
               <Link to="/" className="text-[#1A1A1A] tracking-[0.3em] uppercase" style={{ fontFamily: "Georgia, serif", fontSize: "1.1rem" }}>
-                Aurea
+                April Singh
               </Link>
               <button onClick={() => setMobileOpen(false)} className="text-[#1A1A1A]">
                 <X size={22} />

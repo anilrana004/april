@@ -35,7 +35,7 @@ export function Newsletter() {
               Thank you for subscribing!
             </p>
             <p className="text-[#9A9590] mt-2" style={{ fontSize: "0.78rem" }}>
-              Welcome to the Aurea community.
+              Welcome to the April Singh community.
             </p>
           </div>
         ) : (

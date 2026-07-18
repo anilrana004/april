@@ -6,7 +6,7 @@ const testimonials = [
     name: "Sophie R.",
     location: "New York, NY",
     rating: 5,
-    text: "I've been wearing my Aurea necklace every single day for a year and it still looks brand new. The quality is exceptional — I get compliments constantly.",
+    text: "I've been wearing my April Singh necklace every single day for a year and it still looks brand new. The quality is exceptional — I get compliments constantly.",
     product: "Crescent Moon Pendant",
   },
   {
@@ -22,7 +22,7 @@ const testimonials = [
     name: "Camille B.",
     location: "Chicago, IL",
     rating: 5,
-    text: "The stacking ring set is absolutely gorgeous. Lightweight, delicate, and exactly as pictured. Aurea has become my go-to for all jewelry.",
+    text: "The stacking ring set is absolutely gorgeous. Lightweight, delicate, and exactly as pictured. April Singh has become my go-to for all jewelry.",
     product: "Stacking Band Set",
   },
 ];
